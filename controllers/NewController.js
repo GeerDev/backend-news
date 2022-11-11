@@ -42,11 +42,12 @@ const NewController = {
         res.status(500).send("There was a problem getting the news by id")
     }
   },
-  async create(req, res) {
+  async create(req, res, next) {
     try {
-
+      const newNews = await New.create({ ...req.body, country:["spain"], language:"spanish", archived: false});
+      res.status(201).send({info:"A new news item has been created", newNews})
     } catch (error) {
- 
+      next(error)
     }
   },
   async updateArchived(req, res) {

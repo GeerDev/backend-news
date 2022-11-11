@@ -2,13 +2,16 @@ const mongoose = require('mongoose');
 
 const NewSchema = new mongoose.Schema({
     title: {
-        type: String
+        type: String,
+        required: [true, "Please enter a title"]
     },
     link: {
-        type: String
+        type: String,
+        default: ""
     },
     source_id: {
-        type: String
+        type: String,
+        default: "own source"
     },
     keywords: {
         type: Array
@@ -17,19 +20,23 @@ const NewSchema = new mongoose.Schema({
         type: Array
     },
     image_url: {
-        type: String
+        type: String,
+        required: [true, "Please enter an image"]
     },
     video_url: {
-        type: String
+        type: String,
+        default: null
     },
     description: {
-        type: String
+        type: String,
+        required: [true, "Please enter a description"]
     },
     pubDate: {
         type: String
     },
     content: {
-        type: String
+        type: String,
+        required: [true, "Please enter a minimum content"]
     },
     country: {
         type: Array
