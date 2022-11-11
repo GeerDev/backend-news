@@ -35,9 +35,11 @@ const NewController = {
   },
   async getById(req, res) {
     try {
-
+        const oneNews = await New.findById(req.params.id);
+        res.status(200).send({info:`Here is your news with id ${req.params.id}`, oneNews})
     } catch (error) {
-
+        console.error(error);
+        res.status(500).send("There was a problem getting the news by id")
     }
   },
   async create(req, res) {
