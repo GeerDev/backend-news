@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000
 
 dbConnection()
 
-// app.use('/news', require('./routes/news'));
+app.use('/news', require('./routes/news'));
 
 app.use('/', swaggerUI.serve,swaggerUI.setup(docs))
 
