@@ -26,9 +26,11 @@ const NewController = {
   },
   async getAll(req, res) {
     try {
-
+        const news = await New.find()
+        res.status(200).send({info:"There you have all the news", news})
     } catch (error) {
-
+        console.error(error);
+        res.status(500).send("There was a problem getting all news")
     }
   },
   async getById(req, res) {
