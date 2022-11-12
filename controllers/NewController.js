@@ -53,7 +53,7 @@ const NewController = {
   async updateArchived(req, res) {
     try {
       const updateNews = await New.findByIdAndUpdate(req.params.id, { archived: true }, { new: true })
-      res.status(200).send({info: `News with id  ${updateNews._id} has been updated`, updateNews })
+      res.status(200).send({info: `News with id  ${updateNews._id} has been updated`, updateNews})
     } catch (error) {
       console.error(error);
       res.status(500).send("There was a problem updating the news item")
@@ -62,7 +62,7 @@ const NewController = {
   async delete(req, res) {
     try {
       const deleteNews = await New.findByIdAndDelete(req.params.id)
-      res.status(200).send({info: `News with id  ${deleteNews._id} has been deleted`, deleteNews })
+      res.status(200).send({info: `News with id  ${deleteNews._id} has been deleted`, deleteNews})
     } catch (error) {
       console.error(error);
       res.status(500).send("There was a problem in deleting the news item")
@@ -70,9 +70,11 @@ const NewController = {
   },
   async showCategories(req, res) {
     try {
-
+      const categories = await New.distinct("category")
+      res.status(200).send({info: "The following categories are available", categories})
     } catch (error) {
- 
+      console.error(error);
+      res.status(500).send("There was a problem getting the available categories")
     }
   }
 };
