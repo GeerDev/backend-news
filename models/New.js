@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const NewSchema = new mongoose.Schema({
     title: {
         type: String,
-        // required: [true, "Please enter a title"]
+        required: [true, "Please enter a title"]
     },
     link: {
         type: String,
@@ -21,7 +21,7 @@ const NewSchema = new mongoose.Schema({
     },
     image_url: {
         type: String,
-        // required: [true, "Please enter an image"]
+        required: [true, "Please enter an image"]
     },
     video_url: {
         type: String,
@@ -29,14 +29,14 @@ const NewSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        // required: [true, "Please enter a description"]
+        required: [true, "Please enter a description"]
     },
     pubDate: {
         type: String
     },
     content: {
         type: String,
-        // required: [true, "Please enter a minimum content"]
+        required: [true, "Please enter a minimum content"]
     },
     country: {
         type: Array

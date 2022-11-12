@@ -44,6 +44,7 @@ const NewController = {
   },
   async create(req, res, next) {
     try {
+      req.file ? req.body.image_url = req.file.filename : req.body.image_url = ''
       const newNews = await New.create({ ...req.body, country:["spain"], language:"spanish", archived: false});
       res.status(201).send({info:"A new news item has been created", newNews})
     } catch (error) {
