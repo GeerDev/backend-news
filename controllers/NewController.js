@@ -76,6 +76,16 @@ const NewController = {
       console.error(error);
       res.status(500).send("There was a problem getting the available categories")
     }
+  },
+  async searchByTitle(req, res) {
+    try {
+      const title = new RegExp(`${req.params.title}`, 'i')
+      const resultNews = await New.aggregate([{ $match: { title } }])
+      res.status(200).send({info: "These are the results of your search", resultNews})
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("There was a problem when doing the search")
+    }
   }
 };
 
