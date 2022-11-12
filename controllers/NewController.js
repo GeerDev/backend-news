@@ -1,5 +1,6 @@
 const New = require("../models/New.js");
 const axios = require("axios");
+const fs = require('fs');
 
 const NewController = {
   async fillDatabase(req, res) {
@@ -44,11 +45,11 @@ const NewController = {
   },
   async create(req, res, next) {
     try {
-      req.file ? req.body.image_url = req.file.filename : req.body.image_url = ''
-      const newNews = await New.create({ ...req.body, country:["spain"], language:"spanish", archived: false});
+      const newNews = await New.create({ ...req.body, image_url: req.file?.filename, country:["spain"], language:"spanish", archived: false});
       res.status(201).send({info:"A new news item has been created", newNews})
     } catch (error) {
-      next(error)
+      if (req.file) fs.unlinkSync(req.file?.destination + "/" + req.file?.filename)
+      next(error);
     }
   },
   async updateArchived(req, res) {

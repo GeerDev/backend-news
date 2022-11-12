@@ -6,6 +6,7 @@ const docs = require('./docs/index')
 require('dotenv').config()
 
 const { dbConnection } = require('./database/config')
+const { typeError } = require("./middlewares/errors");
 const PORT = process.env.PORT || 3000
 
 dbConnection()
@@ -15,5 +16,7 @@ app.use(express.static("./public"));
 app.use('/news', require('./routes/news'));
 
 app.use('/', swaggerUI.serve,swaggerUI.setup(docs))
+
+app.use(typeError);
 
 app.listen(PORT, () => console.log(`Server running in port ${PORT}`))
