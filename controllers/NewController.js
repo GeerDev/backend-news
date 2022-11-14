@@ -37,7 +37,11 @@ const NewController = {
   async getById(req, res) {
     try {
         const oneNews = await New.findById(req.params.id);
-        res.status(200).send({info:`Here is your news with id ${req.params.id}`, oneNews})
+        if(oneNews){
+          res.status(200).send({info:`Here is your news with id ${req.params.id}`, oneNews})
+        } else {
+          res.status(400).send("Please enter a valid news ID")
+        } 
     } catch (error) {
         console.error(error);
         res.status(500).send("There was a problem getting the news by id")
@@ -54,8 +58,13 @@ const NewController = {
   },
   async updateArchived(req, res) {
     try {
-      const updateNews = await New.findByIdAndUpdate(req.params.id, { archived: true }, { new: true })
-      res.status(200).send({info: `News with id  ${updateNews._id} has been updated`, updateNews})
+      const found = await New.findById(req.params.id);
+      if(found) {
+        const updateNews = await New.findByIdAndUpdate(req.params.id, { archived: true }, { new: true })
+        res.status(200).send({info: `News with id  ${updateNews._id} has been updated`, updateNews})
+      } else {
+        res.status(400).send("Please enter a valid news ID")
+      }
     } catch (error) {
       console.error(error);
       res.status(500).send("There was a problem updating the news item")
@@ -63,8 +72,13 @@ const NewController = {
   },
   async delete(req, res) {
     try {
+      const found = await New.findById(req.params.id);
+      if(found) {
       const deleteNews = await New.findByIdAndDelete(req.params.id)
       res.status(200).send({info: `News with id  ${deleteNews._id} has been deleted`, deleteNews})
+    } else {
+      res.status(400).send("Please enter a valid news ID")
+    }
     } catch (error) {
       console.error(error);
       res.status(500).send("There was a problem in deleting the news item")
@@ -95,7 +109,7 @@ const NewController = {
   async searchByTitle(req, res) {
     try {
       let resultNews
-      let { title: titleQuery, category = "allcategories"} = req.query
+      let { title: titleQuery = "", category = "allcategories"} = req.query
       const title = new RegExp(`${titleQuery}`, 'i')
       category === "allcategories" ? resultNews = await New.aggregate([{ $match: { title }}]) : resultNews = await New.aggregate([{ $match: { $and:[{ title }, { category } ] }}])
       res.status(200).send({info: "These are the results of your search", resultNews})
