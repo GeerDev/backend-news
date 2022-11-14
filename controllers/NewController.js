@@ -14,7 +14,7 @@ const NewController = {
             data = [...data, results].flat()
         }
         data.forEach(async element => {
-            if (element.description && element.image_url){
+            if (element.description && element.image_url && element.content){
                 numberNews++
                 await New.create({...element, archived: false})
             }
@@ -27,7 +27,7 @@ const NewController = {
   },
   async getAll(req, res) {
     try {
-        const news = await New.find()
+        const news = await New.find().sort({ updatedAt: -1 })
         res.status(200).send({info:"There you have all the news", news})
     } catch (error) {
         console.error(error);

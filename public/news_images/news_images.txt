@@ -1,0 +1,1 @@
+In this folder the images from the server will be stored.
