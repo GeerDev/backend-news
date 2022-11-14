@@ -79,10 +79,25 @@ const NewController = {
       res.status(500).send("There was a problem getting the available categories")
     }
   },
+  async findNewsByCategory(req, res) {
+    try {
+      if(req.params.category === "allcategories"){
+        const allCategories = await New.find()
+        return res.status(200).send({info: "Here you have the news of all categories.", allCategories})
+      }
+      const newsByCategories = await New.find({ category: req.params.category })
+      res.status(200).send({info: `Here you have the news of the category ${req.params.category}`, newsByCategories})
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("There was a problem in getting the news by category")
+    }
+  },
   async searchByTitle(req, res) {
     try {
-      const title = new RegExp(`${req.params.title}`, 'i')
-      const resultNews = await New.aggregate([{ $match: { title } }])
+      let resultNews
+      let { title: titleQuery, category = "allcategories"} = req.query
+      const title = new RegExp(`${titleQuery}`, 'i')
+      category === "allcategories" ? resultNews = await New.aggregate([{ $match: { title }}]) : resultNews = await New.aggregate([{ $match: { $and:[{ title }, { category } ] }}])
       res.status(200).send({info: "These are the results of your search", resultNews})
     } catch (error) {
       console.error(error);
