@@ -14,11 +14,12 @@ app.use(cors())
 dbConnection()
 
 app.use(express.static("./public"));
+app.use(express.json());
 
 app.use('/news', require('./routes/news'));
-
 app.use('/', swaggerUI.serve,swaggerUI.setup(docs))
-
 app.use(typeError);
 
 app.listen(PORT, () => console.log(`Server running in port ${PORT}`))
+
+module.exports = app;

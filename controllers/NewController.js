@@ -50,7 +50,8 @@ const NewController = {
   },
   async create(req, res, next) {
     try {
-      const newNews = await New.create({ ...req.body, image_url: req.file?.filename, country:["spain"], language:"spanish", archived: false});
+      if(req.file) req.body.image_url = req.file?.filename
+      const newNews = await New.create({ ...req.body, country:["unites state of america"], language:"english", archived: false});
       res.status(201).send({info:"A new news item has been created", newNews})
     } catch (error) {
       if (req.file) fs.unlinkSync(req.file?.destination + "/" + req.file?.filename)
