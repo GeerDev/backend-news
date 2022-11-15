@@ -16,7 +16,7 @@ const NewSchema = new mongoose.Schema({
     keywords: {
         type: Array
     },
-    creator: {
+    author: {
         type: Array
     },
     image_url: {
@@ -31,7 +31,7 @@ const NewSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please enter a description"]
     },
-    pubDate: {
+    date: {
         type: String
     },
     content: {
@@ -49,6 +49,10 @@ const NewSchema = new mongoose.Schema({
     },
     archived: {
         type: Boolean
+    },
+    archiveDate: {
+        type: Date,
+        default: null
     }
 }, { timestamps: true });
 

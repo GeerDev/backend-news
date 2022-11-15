@@ -9,14 +9,15 @@ const NewController = {
         let data = []
         let numberNews = 0
         for(numPages = 0; numPages < req.params.pages; numPages++){
-            const response = await axios(`https://newsdata.io/api/1/news?apikey=pub_1337343c60f55622c60aae270dadb25ef7c7a&country=es&page=${numPages}`)
+            const response = await axios(`https://newsdata.io/api/1/news?apikey=pub_1337343c60f55622c60aae270dadb25ef7c7a&country=us&page=${numPages}`)
             const { results } = response.data
             data = [...data, results].flat()
         }
         data.forEach(async element => {
-            if (element.description && element.image_url && element.content){
+          const { description, image_url, content, pubDate:date, creator:author } = element
+            if (description && image_url && content){
                 numberNews++
-                await New.create({...element, archived: false})
+                await New.create({...element, date, author, archived: false})
             }
         });
         res.status(201).send(`The news database has been created with ${numberNews} news`)
@@ -60,7 +61,7 @@ const NewController = {
     try {
       const found = await New.findById(req.params.id);
       if(found) {
-        const updateNews = await New.findByIdAndUpdate(req.params.id, { archived: true }, { new: true })
+        const updateNews = await New.findByIdAndUpdate(req.params.id, { archived: true, archiveDate: new Date() }, { new: true })
         res.status(200).send({info: `News with id  ${updateNews._id} has been updated`, updateNews})
       } else {
         res.status(400).send("Please enter a valid news ID")
