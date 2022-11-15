@@ -3,14 +3,14 @@ const app = require("../index");
 const { dbConnection } = require("../database/config");
 const New = require("../models/New");
 
-describe("testing/users", () => {
+describe("testing/news", () => {
 
     beforeAll(async() => {
         process.env.NODE_ENV = 'test' 
         await dbConnection()
     });
 
-    afterAll(async() => await New.deleteMany())
+    // afterAll(async() => await New.deleteMany())
 
     const news = {
       title: "Title to be tested",
@@ -52,12 +52,11 @@ describe("testing/users", () => {
           expect(newNews).toEqual(sendNews);          
     });
 
-    test("Fill database with news", async () => {
-    
-    });
-
     test("Get all the news", async () => {
-    
+        const res = await request(app)
+        .get("/news")
+        .expect(200)
+        console.warn(res.body)
     });
 
     test("Get a news item by id", async () => {
@@ -83,5 +82,13 @@ describe("testing/users", () => {
     test("Delete a news item", async () => {
     
     });
+
+    // test("Fill database with news", async () => {
+    //     const res = await request(app)
+    //     .get("/news/fillDatabase/1")
+    //     .expect(201)
+    //     expect(res.text).toContain("The news database has been created");
+    //     expect(res.statusCode).toBe(201);
+    // });
 
   });

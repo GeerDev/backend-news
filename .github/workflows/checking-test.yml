@@ -11,7 +11,7 @@ on:
       - '**.md'
 
 env:
-  MONGO_URI_TEST: mongodb+srv://Ger:GeraMongo17@sierracluster.rkngt3b.mongodb.net/Back_News_Testing     
+  MONGO_URI_TEST: ${{ secrets.MONGO_URI_TEST }}   
 
 jobs:
   build:
