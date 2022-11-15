@@ -10,7 +10,9 @@ describe("testing/news", () => {
         await dbConnection()
     });
 
-    // afterAll(async() => await New.deleteMany())
+    afterAll(async() => await New.deleteMany())
+
+    let id
 
     const news = {
       title: "Title to be tested",
@@ -37,7 +39,9 @@ describe("testing/news", () => {
         expect(res.body.newNews.createdAt).toBeDefined();
         expect(res.body.newNews.updatedAt).toBeDefined();
         expect(res.body.newNews.__v).toBeDefined();
-           
+      
+      id = res.body.newNews._id
+
       const sendNews = {
             ...news,
             _id: res.body.newNews._id,
@@ -56,39 +60,55 @@ describe("testing/news", () => {
         const res = await request(app)
         .get("/news")
         .expect(200)
-        console.warn(res.body)
+        expect(res.body.info).toBe('There you have all the news')
+        expect(res.body.news).toBeInstanceOf(Array)    
     });
 
     test("Get a news item by id", async () => {
-    
-    });
+        const res = await request(app)
+        .get(`/news/id/${id}`)
+        .expect(200)
+        expect(res.body.info).toBe(`Here is your news with id ${id}`) 
 
-    test("Show categories", async () => {
-    
-    });
+        const errorRes = await request(app)
+        .get(`/news/id/${id.replace(/[a-z]/gi,'e')}`)
+        .expect(400)
+        expect(errorRes.text).toBe("Please enter a valid news ID") 
 
-    test("Get news by category", async () => {
-    
-    });
-
-    test("Search for a news item", async () => {
-    
+        const errorServer = await request(app)
+        .get(`/news/id/${id + 1}`)
+        .expect(500)
+        expect(errorServer.text).toBe("There was a problem getting the news by id") 
     });
 
     test("Update archived property and archiver date", async () => {
-    
+        const res = await request(app)
+        .put(`/news/id/${id}`)
+        .expect(200)
+        expect(res.body.info).toBe(`News with id ${id} has been updated`) 
+        expect(res.body.updateNews).toEqual(
+            expect.objectContaining({
+                archived: true,
+                archiveDate: res.body.updateNews.archiveDate
+            })
+          );
     });
 
     test("Delete a news item", async () => {
-    
+        const res = await request(app)
+        .delete(`/news/id/${id}`)
+        .expect(200)
+        expect(res.body.info).toBe(`News with id ${id} has been deleted`) 
+        const result = await New.findById(id)
+        expect(result).toBeNull()
     });
 
-    // test("Fill database with news", async () => {
-    //     const res = await request(app)
-    //     .get("/news/fillDatabase/1")
-    //     .expect(201)
-    //     expect(res.text).toContain("The news database has been created");
-    //     expect(res.statusCode).toBe(201);
-    // });
+    test("Fill database with news", async () => {
+        const res = await request(app)
+        .get("/news/fillDatabase/1")
+        .expect(201)
+        expect(res.text).toContain("The news database has been created");
+        expect(res.statusCode).toBe(201);
+    });
 
   });
