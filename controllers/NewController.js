@@ -49,7 +49,7 @@ const NewController = {
   },
   async create(req, res, next) {
     try {
-      if(req.file) req.body.image_url = "http://localhost:3017/news_images/" + req.file?.filename
+      if(req.file) req.body.image_url = process.env.LOCAL_OR_DEPLOY + req.file?.filename
       const newNews = await New.create({ ...req.body, country:["unites state of america"], language:"english", archived: false});
       res.status(201).send({info:"A new news item has been created", newNews})
     } catch (error) {
@@ -75,7 +75,7 @@ const NewController = {
     try {
       const found = await New.findById(req.params.id);
       if(found) {
-      if(found.source_id === "own source") fs.unlinkSync(`./public/news_images/${found.image_url.slice(34, found.length)}`)
+      if(found.source_id === "own source") fs.unlinkSync(`./public/news_images/${found.image_url.slice(found.image_url.lastIndexOf("/"), found.length)}`)
       const deleteNews = await New.findByIdAndDelete(req.params.id)
       res.status(200).send({info: `News with title ${deleteNews.title} has been deleted`, deleteNews})
     } else {
