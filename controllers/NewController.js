@@ -49,7 +49,7 @@ const NewController = {
   },
   async create(req, res, next) {
     try {
-      if(req.file) req.body.image_url = req.file?.filename
+      if(req.file) req.body.image_url = "http://localhost:3017/news_images/" + req.file?.filename
       const newNews = await New.create({ ...req.body, country:["unites state of america"], language:"english", archived: false});
       res.status(201).send({info:"A new news item has been created", newNews})
     } catch (error) {
@@ -62,7 +62,7 @@ const NewController = {
       const found = await New.findById(req.params.id);
       if(found) {
         const updateNews = await New.findByIdAndUpdate(req.params.id, { archived: true, archiveDate: new Date() }, { new: true })
-        res.status(200).send({info: `News with id ${updateNews._id} has been updated`, updateNews})
+        res.status(200).send({info: `News with title ${updateNews.title} has been updated`, updateNews})
       } else {
         res.status(400).send("Please enter a valid news ID")
       }
@@ -75,8 +75,9 @@ const NewController = {
     try {
       const found = await New.findById(req.params.id);
       if(found) {
+      if(found.source_id === "own source") fs.unlinkSync(`./public/news_images/${found.image_url.slice(34, found.length)}`)
       const deleteNews = await New.findByIdAndDelete(req.params.id)
-      res.status(200).send({info: `News with id ${deleteNews._id} has been deleted`, deleteNews})
+      res.status(200).send({info: `News with title ${deleteNews.title} has been deleted`, deleteNews})
     } else {
       res.status(400).send("Please enter a valid news ID")
     }
@@ -97,10 +98,10 @@ const NewController = {
   async findNewsByCategory(req, res) {
     try {
       if(req.params.category === "allcategories"){
-        const allCategories = await New.find()
-        return res.status(200).send({info: "Here you have the news of all categories.", allCategories})
+        const newsByCategories = await New.find().sort({ updatedAt: -1 })
+        return res.status(200).send({info: "Here you have the news of all categories.", newsByCategories})
       }
-      const newsByCategories = await New.find({ category: req.params.category })
+      const newsByCategories = await New.find({ category: req.params.category }).sort({ updatedAt: -1 })
       res.status(200).send({info: `Here you have the news of the category ${req.params.category}`, newsByCategories})
     } catch (error) {
       console.error(error);

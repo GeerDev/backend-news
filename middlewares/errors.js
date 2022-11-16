@@ -1,5 +1,5 @@
 const typeError = (err, req, res, next) => {
-    console.log(err.errors)
+    if(err.name !== 'ValidationError') return res.status(500).send("There was a problem in the creation of the news item");
     let errors = Object.values(err.errors).map(el => el.message);
     if(errors.length > 1) {
         let chain = "";

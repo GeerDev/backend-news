@@ -13,6 +13,7 @@ describe("testing/news", () => {
     afterAll(async() => await New.deleteMany())
 
     let id
+    let name
 
     const news = {
       title: "Title to be tested",
@@ -41,6 +42,7 @@ describe("testing/news", () => {
         expect(res.body.newNews.__v).toBeDefined();
       
       id = res.body.newNews._id
+      name = res.body.newNews.name
 
       const sendNews = {
             ...news,
@@ -62,6 +64,7 @@ describe("testing/news", () => {
         .expect(200)
         expect(res.body.info).toBe('There you have all the news')
         expect(res.body.news).toBeInstanceOf(Array)    
+        expect(res.body.news).toHaveLength(1)
     });
 
     test("Get a news item by id", async () => {
@@ -85,7 +88,7 @@ describe("testing/news", () => {
         const res = await request(app)
         .put(`/news/id/${id}`)
         .expect(200)
-        expect(res.body.info).toBe(`News with id ${id} has been updated`) 
+        expect(res.body.info).toBe(`News with title ${title} has been updated`) 
         expect(res.body.updateNews).toEqual(
             expect.objectContaining({
                 archived: true,
@@ -98,7 +101,7 @@ describe("testing/news", () => {
         const res = await request(app)
         .delete(`/news/id/${id}`)
         .expect(200)
-        expect(res.body.info).toBe(`News with id ${id} has been deleted`) 
+        expect(res.body.info).toBe(`News with title ${title} has been deleted`) 
         const result = await New.findById(id)
         expect(result).toBeNull()
     });
