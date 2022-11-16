@@ -13,7 +13,7 @@ describe("testing/news", () => {
     afterAll(async() => await New.deleteMany())
 
     let id
-    let name
+    let title
 
     const news = {
       title: "Title to be tested",
@@ -42,7 +42,7 @@ describe("testing/news", () => {
         expect(res.body.newNews.__v).toBeDefined();
       
       id = res.body.newNews._id
-      name = res.body.newNews.name
+      title = res.body.newNews.title
 
       const sendNews = {
             ...news,
