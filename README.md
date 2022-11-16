@@ -4,7 +4,7 @@ _Crearemos un prototipo de back-end que proporcione y gestione información sobr
 
 ## Api usada para sacar datos de las noticias ☑️
 
-Para poblar nuestra base de datos en MongoDB hemos utilizado una API externa contiene noticias de actualidad:
+Para poblar nuestra base de datos en MongoDB hemos utilizado una API externa que contiene noticias de actualidad:
 
 ![Foto APINEWS](./images_github/APINEWS.png)
 
@@ -47,12 +47,12 @@ Arrancar el proyecto:
 
 ## Endpoints y middlewares 🛠️
 
-El sistema ataca al modelo "Company" del que disponemos en la base de datos, y puede realizar estas acciones (endpoints):
+El sistema ataca al modelo "New" del que disponemos en la base de datos, y puede realizar estas acciones (endpoints):
 
 - fillDatabase: Ejecuta las llamadas a una API externa para poblar nuestra base de datos con los suyos
 - getAll: Devuelve todas las noticias ordenadas por ingreso en la base de datos
 - getById: Devuelve una noticia filtrada por Id
-- showCategories: Devuelve todas las categorias existentes en las noticias de tu base de datos
+- showCategories: Devuelve todas las categorias existentes en las noticias en la base de datos
 - findNewsByCategory: Encuentra las noticias filtradas por la categoria que le indiques
 - searchByTitle: Realiza la busqueda por título de una noticia, también filtra por categoria
 - create: Crea una noticia
@@ -61,7 +61,7 @@ El sistema ataca al modelo "Company" del que disponemos en la base de datos, y p
 
 Los middlewares implementados en este proyecto son los siguientes:
 
-- errors: Controla que se cumplan las validaciones que tenemos en los modelos de la base de datos
+- errors: Controla que se cumplan las validaciones que tenemos en los modelos de la base de datos a la hora de crear una noticia
 - multer: Nos permite poder subir imágenes al servidor
 
 ## Testing con Jest y Supertest 🎯
@@ -76,7 +76,7 @@ Comando para ejecutar los tests:
 
 ## Integración continua: Github Actions 📌
 
-Hemos configurado un workflow para que esté escuchando cuando se producen pusheos o pull request a nuestra rama "main" y en esa caso que ejecute los tests implementados:
+Hemos configurado un workflow para que esté escuchando cuando se producen pusheos o pull request a nuestra rama "main" y en esa caso que ejecute los tests implementados, también configuramos un "secret" que contiene nuestra conexión a la base de datos de testing:
 
 ![Foto Actions](./images_github/Actions.png)
 
