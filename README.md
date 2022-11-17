@@ -40,6 +40,7 @@ Rellenar las variables necesarias en el archivo .env.example para iniciar el pro
 > >   -  Puerto en el que quieras que se ejecute el server, PORT
 > >   -  Cadena de conexión con la base de datos en Mongo Atlas, MONGO_URI
 > >   -  Cadena de conexión con la base de datos en modo "Test", MONGO_URI_TEST
+> >   -  String para controlar si estamos usando la aplicación en local o está trabajando desplegada, LOCAL_OR_DEPLOY
 
 Arrancar el proyecto:
 
