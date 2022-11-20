@@ -126,14 +126,14 @@ module.exports = {
                         example:"cryptodaily"
                     },
                     keywords:{
-                        type:'Array',
+                        type:'String',
                         description:"The list of keywords related to the article",
-                        example: ["Testing", "Jest", "Hello"]
+                        example: "Testing"
                     },
                     author:{
-                        type:"Array",
+                        type:"String",
                         description:"The author(s) of the news article",
-                        example: ["Ger"]
+                        example: "Ger"
                     },
                     image_url:{
                         type:"String",
@@ -156,9 +156,9 @@ module.exports = {
                         example:"Decentralized exchanges (DEXs) are not the only businesses doing well after the seismic collapse of crypto exchange FTX last week. Hardware wallet manufacturers Ledger and Trezor both reported a huge spike in sales last week as consumer..."
                     },
                     category:{
-                        type:"Array",
+                        type:"String",
                         description:"The list of categories of the news article",
-                        example:["top"]
+                        example:"top"
                     },
                 }
             }
